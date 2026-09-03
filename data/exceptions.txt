@@ -158,3 +158,33 @@ enlase -> enlace
 + ios
 + pap
 + aw
+
+# Imported from misa.aw admin 2026-09-03
++ acceptacion
++ ardiente
++ asigna
++ asigná
++ bold
++ configuracion
++ cron
++ efe
++ for
++ format
++ generador
++ item
++ kité
++ links
++ minuto
++ multiple
++ pedro
++ personalisa
++ plain
++ rich
++ run
++ sabat
++ scohe
++ text
++ workers
+decison -> decision
+humiá -> humilia
+tei -> tey
