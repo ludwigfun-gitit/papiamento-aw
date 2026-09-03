@@ -1,0 +1,160 @@
+# Aruban spelling exceptions and additions, read alongside aw-lexicon.txt.
+#   from -> to     a word the rules cannot derive, mapped explicitly
+#   + word         a valid Aruban word the 2009 list lacks
+# One entry per line; case-insensitive; '#' starts a comment.
+# Grow this from the papiamento-unknown-words collection in /admin.
+hasi -> haci
+einan -> eynan
+# From the unknown-word log, 2026-09-03 (Ludwig)
+revicion -> revision
+atversario -> adversario
+atversarionan -> adversarionan
+national -> nacional
+djadumingu -> diadomingo
+opservashon -> observacion
+eskohonan -> escohonan
+aki -> aki
+huntu -> hunto
+pakiko -> pakico
+bondat -> bondad
+ku -> cu
+kende -> ken
++ tabatin
++ diaranson
+diarason -> diaranson
+# Google Translate writes the Curaçao dj- weekdays
+djadomingo -> diadomingo
+djaluna -> dialuna
+djamars -> diamars
+djarason -> diaranson
+djaweps -> diahuebs
+djabièrnè -> diabierna
+djabierne -> diabierna
+djasabra -> diasabra
+diaranzon -> diaranson
+diabièrnè -> diabierna
+diabierne -> diabierna
++ evangelio
++ liturgia
++ liturgico
++ eucaristia
++ sacramento
++ homilia
++ vicario
++ diocesis
++ diocesano
++ obispo
++ parokia
++ parokial
++ catequesis
++ catequista
++ sacristan
++ diacono
++ rosario
++ novena
++ adoracion
++ confesion
++ bautismo
++ confirmacion
++ matrimonio
++ uncion
++ ordenacion
++ adviento
++ cuaresma
++ pascu
++ pentecostes
++ trinidad
++ apostol
++ evangelista
++ martir
++ beato
++ beata
++ santa
++ santo
++ profeta
++ arcangel
++ natividad
++ asuncion
++ inmaculada
++ anunciacion
++ presentacion
++ transfiguracion
++ exaltacion
++ epifania
++ ascension
++ corpus
++ misa
++ oracion
++ reflexion
++ lectura
++ salmo
++ awe
++ mañan
++ ayera
++ siman
++ luna
++ aña
+# --- from the site's own copy (pap-aw.ts) ---
+hañá -> haya
+haña -> haya
+hanja -> haya
+skohe -> scoge
+skohé -> scoge
+bòrdador -> borrador
+dokument -> documento
+calender -> calendario
+imediatamente -> inmediatamente
+submetí -> somete
+submeté -> somete
+apeido -> apellido
+lesi -> lesa
+korre -> core
+editabel -> editable
+deprekriá -> depreciá
+rekoudamentu -> recaudamento
++ revisor
++ servicio
++ calendario
++ necesidad
++ configura
++ ningun
++ atrobe
+kalender -> calendario
+enlase -> enlace
++ enlace
++ navegador
++ manualmente
++ indefinidamente
++ administrador
++ perfil
++ motivo
++ contacta
++ confidencialidad
++ movimento
++ sujeto
++ locacion
++ guardia
++ catalogo
++ suscribi
++ esnan
++ laudes
++ desfase
++ portret
+# --- loanwords used as-is on the site ---
++ email
++ admin
++ draft
++ rota
++ browser
++ link
++ login
++ app
++ online
++ info
++ edit
++ release
++ repeat
++ motif
++ ios
++ pap
++ aw

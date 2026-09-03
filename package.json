@@ -1,0 +1,23 @@
+{
+  "name": "@bloo/papiamento-aw",
+  "version": "0.1.0",
+  "description": "Aruban Papiamento spelling converter (2009 Vocabulario di Papiamento + exceptions) and a Google Translate adapter, shared by misa.aw and Traductor",
+  "type": "module",
+  "license": "UNLICENSED",
+  "repository": "github:ludwigfun-gitit/papiamento-aw",
+  "engines": { "node": ">=20.9.0" },
+  "files": ["dist", "data", "README.md"],
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+    "./google": { "types": "./dist/google-translate.d.ts", "default": "./dist/google-translate.js" }
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "test": "node --experimental-strip-types --import ./test/ts-resolver.mjs --test test/*.test.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}
