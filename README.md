@@ -23,7 +23,7 @@ import { googleTranslate } from '@bloo/papiamento-aw/google'
 ## Install (git dependency)
 
 ```sh
-pnpm add github:ludwigfun-gitit/papiamento-aw#v0.3.0
+pnpm add github:ludwigfun-gitit/papiamento-aw#v0.3.1
 ```
 
 `dist/` is committed, so no build step runs on install.

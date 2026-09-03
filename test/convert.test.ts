@@ -49,10 +49,10 @@ test('exceptions from the unknown-word log, and a host-supplied site lexicon', (
     toAruban('revicion, atversarionan, national, djadumingu, opservashon, eskohonan, djabièrnè, djaweps').text,
     'revision, adversarionan, nacional, diadomingo, observacion, escohonan, diabierna, diahuebs',
   )
-  assert.deepEqual(toAruban('un blorpo, sabat').unknown, ['blorpo', 'sabat'])
-  setSiteLexicon({ map: new Map([['blorpo', 'blorpe']]), words: new Set(['sabat']) })
-  assert.equal(toAruban('Un blorpo, sabat.').text, 'Un blorpe, sabat.')
-  assert.deepEqual(toAruban('un blorpo, sabatnan').unknown, [])
+  assert.deepEqual(toAruban('un blorpo, gloop').unknown, ['blorpo', 'gloop'])
+  setSiteLexicon({ map: new Map([['blorpo', 'blorpe']]), words: new Set(['gloop']) })
+  assert.equal(toAruban('Un blorpo, gloop.').text, 'Un blorpe, gloop.')
+  assert.deepEqual(toAruban('un blorpo, gloopnan').unknown, [])
   setSiteLexicon({ map: new Map(), words: new Set() })
   assert.deepEqual(toAruban('un blorpo').unknown, ['blorpo'])
 })
