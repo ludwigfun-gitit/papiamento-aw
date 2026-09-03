@@ -30,5 +30,11 @@ pnpm add github:ludwigfun-gitit/papiamento-aw#v0.2.0
 
 ## Maintain
 
-- Add a mapping (`from -> to`) or an accepted word (`+ word`) to `data/exceptions.txt`.
+- Add a mapping (`from -> to`) or an accepted word (`+ word`) to `data/exceptions.txt`, by hand or by pulling the decisions made in misa.aw's admin (the unknown-word list):
+
+  ```sh
+  MISA_SECRET=<CRON_SECRET of the misa.aw server> pnpm import-corrections
+  ```
+
+  Idempotent: present lines are skipped, a changed correction replaces the old mapping, new lines land under a dated header.
 - `pnpm test`, `pnpm build`, commit, tag `vX.Y.Z`, push. Consumers bump the tag.
