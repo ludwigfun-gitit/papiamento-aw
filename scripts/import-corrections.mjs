@@ -3,6 +3,7 @@
 //
 //   MISA_SECRET=… pnpm import-corrections
 //   MISA_URL=http://localhost:3000 MISA_SECRET=… pnpm import-corrections   (a dev server)
+//   or put MISA_SECRET=… in a gitignored .env next to package.json.
 //
 // misa.aw serves them at /api/admin/papiamento/corrections in this file's own
 // format: `from -> to` for a corrected word, `+ word` for a word accepted as
@@ -11,10 +12,20 @@
 // admin's latest decision wins); everything new lands under a dated header.
 // Then: pnpm test, pnpm build, commit, tag, push, and bump the tag in the
 // consumers. Nothing here touches the lexicon itself.
-import { readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 const FILE = fileURLToPath(new URL('../data/exceptions.txt', import.meta.url))
+
+// A gitignored .env next to package.json may hold MISA_SECRET (and MISA_URL),
+// so the secret never has to travel through a chat or a shell history.
+const ENV = fileURLToPath(new URL('../.env', import.meta.url))
+if (existsSync(ENV)) {
+  for (const line of readFileSync(ENV, 'utf8').split('\n')) {
+    const m = line.match(/^\s*([A-Z_][A-Z0-9_]*)\s*=\s*(.*?)\s*$/)
+    if (m && !(m[1] in process.env)) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '')
+  }
+}
 const base = (process.env.MISA_URL || 'https://misa-aw-production.up.railway.app').replace(/\/$/, '')
 const secret = process.env.MISA_SECRET
 if (!secret) {
