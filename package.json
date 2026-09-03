@@ -1,6 +1,6 @@
 {
   "name": "@bloo/papiamento-aw",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Aruban Papiamento spelling converter (2009 Vocabulario di Papiamento + exceptions) and a Google Translate adapter, shared by misa.aw and Traductor",
   "type": "module",
   "license": "UNLICENSED",

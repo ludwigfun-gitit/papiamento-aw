@@ -10,6 +10,7 @@
  * failure a human has to act on (the account does not have `pap`).
  */
 const ENDPOINT = 'https://translation.googleapis.com/language/translate/v2';
+const DETECT_ENDPOINT = 'https://translation.googleapis.com/language/translate/v2/detect';
 const USD_PER_MILLION_CHARS = 20;
 const GOOGLE_CODE = {
     'pap-aw': 'pap',
@@ -74,4 +75,30 @@ function decodeEntities(s) {
         .replace(/&lt;/g, '<')
         .replace(/&gt;/g, '>')
         .replace(/&amp;/g, '&');
+}
+/**
+ * Language detection, v2 `/detect`. Returns null when not configured.
+ * Papiamento comes back as `pap` for either spelling; the caller decides
+ * what that means (Traductor: the free convert path).
+ */
+export async function googleDetect(text) {
+    const key = process.env.GOOGLE_TRANSLATE_API_KEY;
+    if (!key || !text.trim())
+        return null;
+    const endpoint = process.env.GOOGLE_DETECT_ENDPOINT || DETECT_ENDPOINT;
+    const resp = await fetch(`${endpoint}?key=${encodeURIComponent(key)}`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ q: text }),
+        signal: AbortSignal.timeout(15000),
+    });
+    if (!resp.ok)
+        throw new Error(`google detect http ${resp.status}`);
+    const json = await resp.json();
+    const first = json?.data?.detections?.[0]?.[0];
+    return {
+        language: String(first?.language ?? 'und'),
+        confidence: Number(first?.confidence ?? 0),
+        costUsd: (text.length / 1_000_000) * USD_PER_MILLION_CHARS,
+    };
 }

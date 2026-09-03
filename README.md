@@ -17,12 +17,13 @@ toCuracao('Nos ta busca un cas cu un color nobo.')
 ```ts
 import { googleTranslate } from '@bloo/papiamento-aw/google'
 // Google Cloud Translation v2 with GOOGLE_TRANSLATE_API_KEY; target 'pap-aw' → Google 'pap', then run toAruban.
+// googleDetect(text) → { language: 'pap' | 'nl' | …, confidence }
 ```
 
 ## Install (git dependency)
 
 ```sh
-pnpm add github:ludwigfun-gitit/papiamento-aw#v0.1.0
+pnpm add github:ludwigfun-gitit/papiamento-aw#v0.2.0
 ```
 
 `dist/` is committed, so no build step runs on install.

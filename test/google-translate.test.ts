@@ -7,7 +7,7 @@ import assert from 'node:assert/strict'
 import http from 'node:http'
 import { after, before, test } from 'node:test'
 
-import { googleTranslate, googleTranslateConfigured } from '../src/google-translate.ts'
+import { googleDetect, googleTranslate, googleTranslateConfigured } from '../src/google-translate.ts'
 
 let server: http.Server
 let lastRequest: { url: string; body: any } | null = null
@@ -29,6 +29,11 @@ before(async () => {
         res.end('unavailable')
         return
       }
+      if ((req.url ?? '').startsWith('/detect')) {
+        res.writeHead(200, { 'content-type': 'application/json' })
+        res.end(JSON.stringify({ data: { detections: [[{ language: 'pap', confidence: 0.87, isReliable: false }]] } }))
+        return
+      }
       const q: string[] = lastRequest.body.q
       res.writeHead(200, { 'content-type': 'application/json' })
       res.end(JSON.stringify({ data: { translations: q.map((t) => ({ translatedText: `[pap] ${t}&#39;s` })) } }))
@@ -38,6 +43,7 @@ before(async () => {
   const port = (server.address() as any).port
   process.env.GOOGLE_TRANSLATE_API_KEY = 'stub-key'
   process.env.GOOGLE_TRANSLATE_ENDPOINT = `http://127.0.0.1:${port}/translate`
+  process.env.GOOGLE_DETECT_ENDPOINT = `http://127.0.0.1:${port}/detect`
 })
 
 after(() => server.close())
@@ -83,4 +89,14 @@ test('not configured → null', async () => {
   assert.equal(googleTranslateConfigured(), false)
   assert.equal(await googleTranslate({ sourceLanguage: 'es', targetLanguage: 'pap-aw', body: 'x' }), null)
   process.env.GOOGLE_TRANSLATE_API_KEY = saved
+})
+
+test('detect: posts the text and maps the first detection', async () => {
+  mode = 'ok'
+  const d = await googleDetect('Bon dia, con ta bay?')
+  assert.ok(d)
+  assert.equal(d!.language, 'pap')
+  assert.ok(d!.confidence > 0.8)
+  assert.equal(lastRequest?.body.q, 'Bon dia, con ta bay?')
+  assert.ok(lastRequest?.url.startsWith('/detect'))
 })
