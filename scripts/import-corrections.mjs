@@ -3,7 +3,9 @@
 //
 //   MISA_SECRET=… pnpm import-corrections
 //   MISA_URL=http://localhost:3000 MISA_SECRET=… pnpm import-corrections   (a dev server)
-//   or put MISA_SECRET=… in a gitignored .env next to package.json.
+//   or put MISA_SECRET=… in a gitignored .env next to package.json,
+//   or pnpm import-corrections --from corrections.txt   (the endpoint's text,
+//   saved from a browser that is logged in to the admin: no secret needed).
 //
 // misa.aw serves them at /api/admin/papiamento/corrections in this file's own
 // format: `from -> to` for a corrected word, `+ word` for a word accepted as
@@ -26,22 +28,28 @@ if (existsSync(ENV)) {
     if (m && !(m[1] in process.env)) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '')
   }
 }
-const base = (process.env.MISA_URL || 'https://misa-aw-production.up.railway.app').replace(/\/$/, '')
-const secret = process.env.MISA_SECRET
-if (!secret) {
-  console.error('MISA_SECRET is required: the value of CRON_SECRET (or SEED_SECRET) on the misa.aw server.')
-  process.exit(2)
+const fromArg = process.argv.indexOf('--from')
+let text
+if (fromArg !== -1 && process.argv[fromArg + 1]) {
+  text = readFileSync(process.argv[fromArg + 1], 'utf8')
+} else {
+  const base = (process.env.MISA_URL || 'https://misa-aw-production.up.railway.app').replace(/\/$/, '')
+  const secret = process.env.MISA_SECRET
+  if (!secret) {
+    console.error('Either --from <file> (the endpoint text saved from a logged-in browser) or MISA_SECRET (CRON_SECRET / SEED_SECRET on the misa.aw server).')
+    process.exit(2)
+  }
+  const resp = await fetch(`${base}/api/admin/papiamento/corrections`, {
+    headers: { 'x-cron-secret': secret, 'x-seed-secret': secret },
+    signal: AbortSignal.timeout(30000),
+  })
+  if (!resp.ok) {
+    console.error(`misa.aw answered ${resp.status}: ${(await resp.text()).slice(0, 200)}`)
+    process.exit(1)
+  }
+  text = await resp.text()
 }
-
-const resp = await fetch(`${base}/api/admin/papiamento/corrections`, {
-  headers: { 'x-cron-secret': secret, 'x-seed-secret': secret },
-  signal: AbortSignal.timeout(30000),
-})
-if (!resp.ok) {
-  console.error(`misa.aw answered ${resp.status}: ${(await resp.text()).slice(0, 200)}`)
-  process.exit(1)
-}
-const incoming = (await resp.text())
+const incoming = text
   .split('\n')
   .map((l) => l.trim())
   .filter((l) => l && !l.startsWith('#'))
@@ -97,4 +105,4 @@ if (fresh.length) {
   lines.push('', `# Imported from misa.aw admin ${stamp}`, ...fresh, '')
 }
 if (added || replaced) writeFileSync(FILE, lines.join('\n'))
-console.log(`${incoming.length} from misa.aw: ${added} added, ${replaced} replaced, ${skipped} already present → ${added || replaced ? 'data/exceptions.txt updated' : 'nothing to do'}`)
+console.log(`${incoming.length} decisions: ${added} added, ${replaced} replaced, ${skipped} already present → ${added || replaced ? 'data/exceptions.txt updated' : 'nothing to do'}`)
